@@ -11,14 +11,17 @@ use Illuminate\Support\Facades\Cache;
 class CacheUserProvider extends EloquentUserProvider
 {
 
+    /**
+     * 缓存时间
+     * @var int
+     */
     protected $_ttl = 3600;
 
     /**
-     * Create a new database user provider.
-     *
+     * CacheUserProvider constructor.
      * @param Hasher $hasher
-     * @param string $model
-     * @return void
+     * @param $model
+     * @param int $ttl
      */
     public function __construct(Hasher $hasher, $model, $ttl = 3600)
     {
@@ -27,10 +30,11 @@ class CacheUserProvider extends EloquentUserProvider
     }
 
     /**
-     * Retrieve a user by their unique identifier.
-     *
+     * Notes: 通过主键查找用户
+     * @Author: <C.Jason>
+     * @Date: 2020/3/10 13:23
      * @param mixed $identifier
-     * @return Model|null
+     * @return \Illuminate\Contracts\Auth\Authenticatable|Builder|Model|null
      */
     public function retrieveById($identifier)
     {
@@ -48,7 +52,6 @@ class CacheUserProvider extends EloquentUserProvider
      */
     protected function newModelQuery($identifier = null)
     {
-
         if (is_null($identifier)) {
             return parent::newModelQuery();
         }
@@ -62,10 +65,8 @@ class CacheUserProvider extends EloquentUserProvider
 
         return Cache::remember($key, $this->_ttl,
             function () use ($model, $identifier) {
-
-                $with = collect(explode(',', config('cache-user.model_with')))
+                $with  = collect(explode(',', config('cache-user.model_with')))
                     ->filter()->toArray();
-
                 $query = $model->when($with, function ($query) use ($with) {
                     return $query->with($with);
                 });
@@ -74,7 +75,6 @@ class CacheUserProvider extends EloquentUserProvider
                     ? $query->where($model->getAuthIdentifierName(), $identifier)->first()
                     : $query->all();
             });
-
     }
 
     /**
@@ -90,11 +90,9 @@ class CacheUserProvider extends EloquentUserProvider
             ? $this->newModelQuery($identifier)
             : $this->newModelQuery($identifier)
                    ->firstWhere($this->createModel()->getAuthIdentifierName(), $identifier);
-
         if (!$retrievedModel) {
             return null;
         }
-
         $rememberToken = $retrievedModel->getRememberToken();
 
         return $rememberToken && hash_equals($rememberToken, $token)

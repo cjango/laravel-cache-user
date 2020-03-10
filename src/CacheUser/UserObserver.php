@@ -8,34 +8,34 @@ class UserObserver
 {
 
     /**
-     * Handle the user "created" event.
-     *
-     * @param Model $user
-     * @return void
+     * Notes: 处理用户模型 created 事件
+     * @Author: <C.Jason>
+     * @Date: 2020/3/10 13:20
+     * @param $user
      */
-    public function created($user)
+    public function created($user): void
     {
         CacheForget::CacheForget($user);
     }
 
     /**
-     * Handle the user "updated" event.
-     *
-     * @param Model $user
-     * @return void
+     * Notes: 处理用户模型 updated 事件
+     * @Author: <C.Jason>
+     * @Date: 2020/3/10 13:20
+     * @param $user
      */
-    public function updated($user)
+    public function updated($user): void
     {
         CacheForget::CacheForget($user);
     }
 
     /**
-     * Handle the user "deleted" event.
-     *
-     * @param Model $user
-     * @return void
+     * Notes: 处理用户模型 deleted 事件
+     * @Author: <C.Jason>
+     * @Date: 2020/3/10 13:21
+     * @param $user
      */
-    public function deleted($user)
+    public function deleted($user): void
     {
         CacheForget::CacheForget($user);
     }

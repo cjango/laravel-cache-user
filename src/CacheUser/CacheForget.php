@@ -9,12 +9,13 @@ class CacheForget
 {
 
     /**
-     * Handle the user "created" event.
-     *
+     * Notes: 删除用户缓存
+     * @Author: <C.Jason>
+     * @Date: 2020/3/10 13:20
      * @param Model $user
      * @return bool
      */
-    public static function CacheForget(Model $user)
+    public static function CacheForget(Model $user): bool
     {
         $user   = optional($user);
         $second = $user->getAuthIdentifierName() ?? 'every';
