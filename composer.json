@@ -1,0 +1,29 @@
+{
+    "name": "jasonc/laravel-cache-user",
+    "description": "用缓存对用户认证，提供读取能力",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "C.Jason",
+            "email": "chenjxlg@163.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.5",
+        "laravel/framework": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jason\\": "src/"
+        },
+        "files": [
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Jason\\CacheUser\\ServiceProvider"
+            ]
+        }
+    }
+}
